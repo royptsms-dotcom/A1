@@ -1,121 +1,261 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-// icons
-import { CheckCircleOutlined, GiftOutlined, MessageOutlined, SettingOutlined, BellOutlined } from '@ant-design/icons-vue';
+import { CheckOutlined, GiftOutlined, MessageOutlined, SettingOutlined, BellOutlined, TeamOutlined } from '@ant-design/icons-vue';
 
-const isActive = ref(true);
+const unreadCount = ref(3);
 
-function deactivateItem() {
-  isActive.value = false;
+const notifications = ref([
+  {
+    id: 1,
+    icon: GiftOutlined,
+    iconColor: '#52c41a',
+    iconBg: '#f6ffed',
+    title: 'Ulang tahun Cristina Danny',
+    message: 'Hari ini adalah hari ulang tahun Cristina Danny.',
+    time: '3:00 AM',
+    isRead: false,
+  },
+  {
+    id: 2,
+    icon: MessageOutlined,
+    iconColor: '#1677ff',
+    iconBg: '#e6f4ff',
+    title: 'Aida Burg berkomentar',
+    message: 'Mengomentari posting Anda.',
+    time: '6:00 PM · 5 Agt',
+    isRead: false,
+  },
+  {
+    id: 3,
+    icon: SettingOutlined,
+    iconColor: '#ff4d4f',
+    iconBg: '#fff1f0',
+    title: 'Profil belum lengkap',
+    message: 'Profil Anda baru 60% lengkap. Lengkapi sekarang!',
+    time: '2:45 PM · 7j lalu',
+    isRead: false,
+  },
+  {
+    id: 4,
+    icon: TeamOutlined,
+    iconColor: '#1677ff',
+    iconBg: '#e6f4ff',
+    title: 'Undangan Meeting',
+    message: 'Cristina Danny mengundang ke Daily Scrum Meeting.',
+    time: '9:10 PM',
+    isRead: true,
+  },
+]);
+
+function markAllRead() {
+  notifications.value.forEach((n) => (n.isRead = true));
+  unreadCount.value = 0;
+}
+
+function markRead(id: number) {
+  const n = notifications.value.find((n) => n.id === id);
+  if (n && !n.isRead) {
+    n.isRead = true;
+    unreadCount.value = Math.max(0, unreadCount.value - 1);
+  }
 }
 </script>
 
 <template>
-  <!-- ---------------------------------------------- -->
-  <!-- notifications DD -->
-  <!-- ---------------------------------------------- -->
-  <v-menu :close-on-content-click="false" offset="6, 0">
+  <v-menu :close-on-content-click="false" offset="10, 0" min-width="400" max-width="400">
     <template v-slot:activator="{ props }">
       <v-btn icon class="text-secondary ml-sm-2 ml-1" color="darkText" rounded="sm" size="small" v-bind="props">
-        <v-badge :content="isActive ? '2' : '0'" color="primary" offset-x="-4" offset-y="-5">
+        <v-badge
+          :content="unreadCount > 0 ? unreadCount.toString() : ''"
+          :model-value="unreadCount > 0"
+          color="error"
+          offset-x="-4"
+          offset-y="-5"
+        >
           <BellOutlined :style="{ fontSize: '16px' }" />
         </v-badge>
       </v-btn>
     </template>
-    <v-sheet rounded="md" width="387" class="notification-dropdown">
-      <div class="pa-4">
+
+    <v-card rounded="xl" elevation="12" class="notif-card">
+      <!-- Header -->
+      <div class="notif-header">
         <div class="d-flex align-center justify-space-between">
-          <h6 class="text-subtitle-1 mb-0">Notifications</h6>
+          <div class="d-flex align-center" style="gap: 8px;">
+            <BellOutlined style="font-size: 16px; color: #1677ff;" />
+            <span class="text-subtitle-2 font-weight-bold">Notifikasi</span>
+            <v-chip v-if="unreadCount > 0" size="x-small" color="error" variant="flat">
+              {{ unreadCount }} baru
+            </v-chip>
+          </div>
           <v-btn
-            variant="text"
-            color="success"
-            icon
-            rounded
-            size="small"
-            @click="deactivateItem()"
-            :class="isActive ? 'd-block' : 'd-none'"
+            v-if="unreadCount > 0"
+            variant="tonal"
+            color="primary"
+            size="x-small"
+            rounded="pill"
+            @click="markAllRead"
           >
-            <CheckCircleOutlined :style="{ fontSize: '16px' }" />
-            <v-tooltip aria-label="tooltip" activator="parent" location="bottom" :content-class="isActive ? 'custom-tooltip' : 'd-none'">
-              <span class="text-caption">Mark as all read</span>
-            </v-tooltip>
+            <CheckOutlined style="font-size: 11px; margin-right: 4px;" />
+            Tandai dibaca
           </v-btn>
         </div>
       </div>
-      <v-divider></v-divider>
-      <perfect-scrollbar style="height: calc(100vh - 300px); max-height: 265px">
-        <v-list class="py-0" lines="two" aria-label="notification list" aria-busy="true">
-          <v-list-item value="1" color="secondary" class="no-spacer py-1" :active="isActive">
-            <template v-slot:prepend>
-              <v-avatar size="36" variant="flat" color="lightsuccess" class="mr-3 py-2 text-success">
-                <GiftOutlined />
-              </v-avatar>
-            </template>
-            <div class="d-inline-flex justify-space-between w-100">
-              <h6 class="text-subtitle-1 font-weight-regular mb-0">
-                It's <span style="font-weight: 600">Cristina danny's</span> birthday today.
-              </h6>
-              <span class="text-caption">3:00 AM</span>
-            </div>
 
-            <p class="text-caption text-medium-emphasis my-0">2 min ago</p>
-          </v-list-item>
-          <v-divider></v-divider>
-          <v-list-item value="2" color="secondary" class="no-spacer">
-            <template v-slot:prepend>
-              <v-avatar size="36" variant="flat" color="lightprimary" class="mr-3 py-2 text-primary">
-                <MessageOutlined />
-              </v-avatar>
-            </template>
-            <div class="d-inline-flex justify-space-between w-100">
-              <h6 class="text-subtitle-1 font-weight-regular mb-0"><span style="font-weight: 600">Aida Burg</span> commented your post.</h6>
-              <span class="text-caption">6:00 PM</span>
-            </div>
+      <v-divider />
 
-            <p class="text-caption text-medium-emphasis my-0">5 August</p>
-          </v-list-item>
-          <v-divider></v-divider>
-          <v-list-item value="3" color="secondary" class="no-spacer" :active="isActive">
-            <template v-slot:prepend>
-              <v-avatar size="36" variant="flat" color="lighterror" class="mr-3 py-2 text-error">
-                <SettingOutlined />
-              </v-avatar>
-            </template>
-            <div class="d-inline-flex justify-space-between w-100">
-              <h6 class="text-subtitle-1 font-weight-regular mb-0">Your Profile is Complete <span style="font-weight: 600">60%</span></h6>
-              <span class="text-caption">2:45 PM</span>
-            </div>
+      <!-- Notification List -->
+      <div class="notif-list">
+        <div
+          v-for="item in notifications"
+          :key="item.id"
+          class="notif-item"
+          :class="{ 'notif-item--unread': !item.isRead }"
+          @click="markRead(item.id)"
+        >
+          <!-- Icon -->
+          <div class="notif-icon" :style="{ background: item.iconBg, color: item.iconColor }">
+            <component :is="item.icon" style="font-size: 18px;" />
+          </div>
 
-            <p class="text-caption text-medium-emphasis my-0">7 hours ago</p>
-          </v-list-item>
-          <v-divider></v-divider>
-          <v-list-item value="4" color="secondary" class="no-spacer">
-            <template v-slot:prepend>
-              <v-avatar size="36" variant="flat" color="lightprimary" class="mr-3 py-2 text-primary"> C </v-avatar>
-            </template>
-            <div class="d-inline-flex justify-space-between w-100">
-              <h6 class="text-subtitle-1 font-weight-regular mb-0">
-                <span style="font-weight: 600">Cristina Danny</span> invited to join <span style="font-weight: 600">Metting.</span>
-              </h6>
-              <span class="text-caption">9:10 PM</span>
+          <!-- Text Content -->
+          <div class="notif-text">
+            <div class="notif-title-row">
+              <span class="notif-title">{{ item.title }}</span>
+              <span class="notif-time">{{ item.time }}</span>
             </div>
+            <p class="notif-message">{{ item.message }}</p>
+          </div>
 
-            <p class="text-caption text-medium-emphasis my-0">Daily scrum meeting time</p>
-          </v-list-item>
-        </v-list>
-      </perfect-scrollbar>
-      <v-divider></v-divider>
-      <div class="pa-2 text-center">
-        <v-btn color="primary" variant="text">View All</v-btn>
+          <!-- Unread indicator -->
+          <div v-if="!item.isRead" class="notif-dot" />
+        </div>
       </div>
-    </v-sheet>
+
+      <v-divider />
+
+      <!-- Footer -->
+      <div class="notif-footer">
+        <v-btn variant="text" color="primary" size="small" block>
+          Lihat Semua Notifikasi →
+        </v-btn>
+      </div>
+    </v-card>
   </v-menu>
 </template>
 
-<style lang="scss">
-.v-tooltip {
-  > .v-overlay__content.custom-tooltip {
-    padding: 2px 6px;
+<style lang="scss" scoped>
+.notif-card {
+  overflow: hidden;
+  border: 1px solid rgba(22, 119, 255, 0.12);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.10),
+    0 2px 8px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Header */
+.notif-header {
+  padding: 18px 28px 16px 28px;
+  background: linear-gradient(135deg, rgba(22, 119, 255, 0.04) 0%, rgba(22, 119, 255, 0.01) 100%);
+}
+
+/* List Container */
+.notif-list {
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
   }
+}
+
+/* Individual Item */
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px 28px;
+  gap: 16px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: background 0.15s ease;
+
+  &:last-child { border-bottom: none; }
+
+  &:hover { background: rgba(0, 0, 0, 0.025); }
+
+  &--unread {
+    background: rgba(22, 119, 255, 0.035);
+    &:hover { background: rgba(22, 119, 255, 0.07); }
+  }
+}
+
+/* Icon Circle */
+.notif-icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Text Block */
+.notif-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.notif-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.notif-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.85);
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.notif-time {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.4);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.notif-message {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.55);
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Unread Dot */
+.notif-dot {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  border-radius: 50%;
+  background: #1677ff;
+  margin-top: 6px;
+}
+
+/* Footer */
+.notif-footer {
+  padding: 10px 28px 12px 28px;
+  background: rgba(0, 0, 0, 0.01);
 }
 </style>

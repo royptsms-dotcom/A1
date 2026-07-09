@@ -9,7 +9,7 @@ const checkbox = ref(false);
 const valid = ref(false);
 const show1 = ref(false);
 const password = ref('admin123');
-const username = ref('info@codedthemes.com');
+const username = ref('admin@royptsms.com');
 // Password validation rules
 const passwordRules = ref([
   (v: string) => !!v || 'Password is required',

@@ -5,7 +5,8 @@ import {
   ChromeOutlined,
   LoginOutlined,
   ProfileOutlined,
-  CrownOutlined
+  CrownOutlined,
+  UserOutlined
 } from '@ant-design/icons-vue';
 
 export interface menu {
@@ -31,16 +32,11 @@ const sidebarItem: menu[] = [
     icon: DashboardOutlined,
     to: '/dashboard'
   },
-  { header: 'Authentication' },
+  { header: 'User' },
   {
-    title: 'Login',
-    icon: LoginOutlined,
-    to: '/login1'
-  },
-  {
-    title: 'Register',
-    icon: ProfileOutlined,
-    to: '/register'
+    title: 'Daftar Karyawan',
+    icon: UserOutlined,
+    to: '/user'
   },
   { header: 'Utilities' },
   {

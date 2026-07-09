@@ -15,6 +15,13 @@ $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
+if (class_exists(\Illuminate\Foundation\Console\ServeCommand::class)) {
+    \Illuminate\Foundation\Console\ServeCommand::$passthroughVariables[] = 'SystemRoot';
+    \Illuminate\Foundation\Console\ServeCommand::$passthroughVariables[] = 'SystemDrive';
+    \Illuminate\Foundation\Console\ServeCommand::$passthroughVariables[] = 'TEMP';
+    \Illuminate\Foundation\Console\ServeCommand::$passthroughVariables[] = 'TMP';
+}
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

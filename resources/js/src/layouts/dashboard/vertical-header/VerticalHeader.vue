@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useCustomizerStore } from '../../../stores/customizer';
+import { useUIStore } from '@/stores/ui';
+import { useAuthStore } from '@/stores/auth';
 // icons
 import { MenuFoldOutlined, SearchOutlined, GithubOutlined } from '@ant-design/icons-vue';
 
@@ -8,9 +10,13 @@ import NotificationDD from './NotificationDD.vue';
 import Searchbar from './SearchBarPanel.vue';
 import ProfileDD from './ProfileDD.vue';
 import { useDisplay } from 'vuetify';
+import { useRoute } from 'vue-router';
 
 const customizer = useCustomizerStore();
+const uiStore = useUIStore();
+const authStore = useAuthStore();
 const { lgAndUp, mdAndDown } = useDisplay();
+const route = useRoute();
 </script>
 
 <template>
@@ -42,8 +48,15 @@ const { lgAndUp, mdAndDown } = useDisplay();
       <MenuFoldOutlined :style="{ fontSize: '16px' }" />
     </v-btn>
 
-    <!-- search mobile -->
-    <v-menu :close-on-content-click="false" v-if="mdAndDown" offset="10, 0">
+    <!-- Dynamic Active Page Title next to hamburger menu -->
+    <div class="ml-2 d-flex align-self-center" style="height: 60px; line-height: 60px;">
+      <span class="text-subtitle-1 font-weight-bold text-darkText" style="font-size: 16px !important;">
+        {{ route.meta.title || route.name }}
+      </span>
+    </div>
+
+    <!-- search mobile removed -->
+    <!-- <v-menu :close-on-content-click="false" v-if="mdAndDown" offset="10, 0">
       <template v-slot:activator="{ props }">
         <v-btn
           class="text-secondary ml-1"
@@ -64,14 +77,12 @@ const { lgAndUp, mdAndDown } = useDisplay();
           </template>
         </v-text-field>
       </v-sheet>
-    </v-menu>
+    </v-menu> -->
 
-    <!-- ---------------------------------------------- -->
-    <!-- Search part -->
-    <!-- ---------------------------------------------- -->
-    <v-sheet v-if="lgAndUp" width="250">
+    <!-- Search part desktop removed -->
+    <!-- <v-sheet v-if="lgAndUp" width="250">
       <Searchbar />
-    </v-sheet>
+    </v-sheet> -->
 
     <!---/Search part -->
 
@@ -103,20 +114,26 @@ const { lgAndUp, mdAndDown } = useDisplay();
     <!-- ---------------------------------------------- -->
     <!-- User Profile -->
     <!-- ---------------------------------------------- -->
-    <v-menu :close-on-content-click="false" offset="8, 0">
+    <v-menu :close-on-content-click="false" offset="10, 0" min-width="360" max-width="360">
       <template v-slot:activator="{ props }">
         <v-btn class="profileBtn" variant="text" rounded="sm" v-bind="props">
           <div class="d-flex align-center">
             <v-avatar class="mr-sm-2 mr-0 py-2">
               <img src="@/assets/images/users/avatar-1.png" alt="Julia" />
             </v-avatar>
-            <h6 class="text-subtitle-1 mb-0 d-sm-block d-none">JWT User</h6>
+            <h6 class="text-subtitle-1 mb-0 d-sm-block d-none">{{ authStore.user?.name || 'JWT User' }}</h6>
           </div>
         </v-btn>
       </template>
-      <v-sheet rounded="md" width="290">
-        <ProfileDD />
-      </v-sheet>
+      <ProfileDD />
     </v-menu>
   </v-app-bar>
 </template>
+
+<style scoped>
+/* Remove Vuetify's dark hover/focus overlay on header icon buttons */
+:deep(.v-btn) > .v-btn__overlay {
+  opacity: 0 !important;
+  background: transparent !important;
+}
+</style>

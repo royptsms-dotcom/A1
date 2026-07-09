@@ -68,9 +68,26 @@
       font-size: 0.875rem;
       color: rgb(var(--v-theme-darkText));
     }
+
+    // Disable ALL overlays (hover, focus, active) — Vuetify renders these as
+    // a tinted pseudo-layer via .v-list-item__overlay that obscures the text
+    > .v-list-item__overlay {
+      opacity: 0 !important;
+      background: transparent !important;
+    }
+
     &.v-list-item--active {
+      background: transparent !important;
+
       .v-list-item-title {
-        color: rgb(var(--v-theme-primary));
+        color: rgb(var(--v-theme-primary)) !important;
+        font-weight: 500 !important;
+      }
+      .v-list-item__prepend {
+        color: rgb(var(--v-theme-primary)) !important;
+      }
+      .anticon {
+        color: rgb(var(--v-theme-primary)) !important;
       }
     }
   }
@@ -91,7 +108,12 @@
     }
     > .v-list-group {
       position: relative;
-      > .v-list-item--active,
+      > .v-list-item--active {
+        background: transparent !important;
+        > .v-list-item__overlay {
+          opacity: 0 !important;
+        }
+      }
       > .v-list-item:hover {
         background: rgb(var(--v-theme-primary), 0.05);
       }

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "EMP-001",
+    "nama": "Budi Santoso",
+    "email": "budi.santoso@example.com",
+    "job": "Software Engineer",
+    "role": "Admin",
+    "no_wa": "081234567890",
+    "status": "Active",
+    "password": "password123"
+  },
+  {
+    "id": "EMP-002",
+    "nama": "Dewi Lestari",
+    "email": "dewi.lestari@example.com",
+    "job": "UI/UX Designer",
+    "role": "User",
+    "no_wa": "087876543210",
+    "status": "Active",
+    "password": "userdesign456"
+  },
+  {
+    "id": "EMP-003",
+    "nama": "Joko Susilo",
+    "email": "joko.susilo@example.com",
+    "job": "Project Manager",
+    "role": "Manager",
+    "no_wa": "089988776655",
+    "status": "Inactive",
+    "password": "pmsecret789"
+  },
+  {
+    "id": "EMP-004",
+    "nama": "Siti Aminah",
+    "email": "siti.aminah@example.com",
+    "job": "QA Engineer",
+    "role": "User",
+    "no_wa": "082133445566",
+    "status": "Active",
+    "password": "qa123pass"
+  },
+  {
+    "id": "EMP-005",
+    "nama": "Rian Hidayat",
+    "email": "rian.hidayat@example.com",
+    "job": "DevOps Engineer",
+    "role": "Admin",
+    "no_wa": "085677889900",
+    "status": "Active",
+    "password": "devopssecure1"
+  }
+]
