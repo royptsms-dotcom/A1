@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)" max-width="800">
+  <v-dialog :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)" max-width="800" transition="dialog-bottom-transition">
     <v-card>
       <v-card-title class="pa-4 bg-secondary text-white d-flex justify-space-between align-center">
         <span>Riwayat Sertifikat: {{ rumahSakit?.nama }}</span>

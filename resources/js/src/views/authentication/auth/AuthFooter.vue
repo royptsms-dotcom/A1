@@ -14,26 +14,22 @@ const footerLink = shallowRef([
 ]);
 </script>
 <template>
-  <v-footer class="px-0 pt-2 z-100" style="z-index: 201; position: relative">
-    <v-row justify="center" no-gutters>
-      <v-col cols="12" md="6" class="text-md-left text-center">
-        <p class="text-subtitle-2 text-lightText mb-md-0 mb-4">
-          This site is protected by
-          <span class="text-primary">Privacy Policy</span>. Distributed by
-          <a href="https://themewagon.com" target="_blank" rel="noopener noreferrer" class="cursor-pointer text-primary"> ThemeWagon </a>
-        </p>
-      </v-col>
-      <v-col class="d-flex flex-md-row flex-column justify-md-end align-center" cols="12" md="6">
+  <div class="px-0 pt-2 z-100 bg-transparent text-center" style="z-index: 201; position: relative; width: 100%;">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; gap: 4px;">
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px;">
         <a
-          onclick="{}"
           v-for="(item, i) in footerLink"
           :key="i"
-          class="cursor-pointer mx-md-3 mx-2 mb-md-0 mb-2 text-subtitle-2 text-lightText"
+          class="cursor-pointer text-subtitle-2 text-lightText text-decoration-none footer-link-hover"
           target="_blank"
         >
           {{ item.title }}
         </a>
-      </v-col>
-    </v-row>
-  </v-footer>
+      </div>
+      <p class="text-subtitle-2 text-lightText mb-0" style="margin-top: 8px;">
+        Powered by
+        <a href="#" class="cursor-pointer text-primary text-decoration-none font-weight-bold ml-1"> PT. SARANA MEGAMEDILAB SENTOSA </a>
+      </p>
+    </div>
+  </div>
 </template>

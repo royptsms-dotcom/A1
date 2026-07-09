@@ -40,27 +40,29 @@ function validate(values: any, { setErrors }: any) {
 </script>
 
 <template>
-  <div class="d-flex justify-space-between align-center">
-    <h3 class="text-h3 text-center mb-0">Login</h3>
-    <router-link to="/register" class="text-primary text-decoration-none">Don't Have an account?</router-link>
-  </div>
-  <Form @submit="validate" class="mt-7 loginForm" v-slot="{ errors, isSubmitting }">
-    <div class="mb-6">
-      <v-label>Email Address</v-label>
+  <div class="custom-font-wrapper">
+    <div class="d-flex justify-center mb-8 mt-4">
+      <h2 class="font-weight-bold text-darkText mb-0" style="letter-spacing: -0.5px; font-size: 2.2rem;">Welcome Back</h2>
+    </div>
+    <Form @submit="validate" class="loginForm" v-slot="{ errors, isSubmitting }">
+    <div class="mb-5">
+      <v-label class="text-subtitle-2 font-weight-medium mb-2 text-darkText">Email Address</v-label>
       <v-text-field
         aria-label="email address"
         v-model="username"
         :rules="emailRules"
-        class="mt-2"
         required
         hide-details="auto"
         variant="outlined"
         color="primary"
+        rounded="lg"
+        class="glass-input"
+        placeholder="Enter your email"
         @input="username"
       ></v-text-field>
     </div>
     <div>
-      <v-label>Password</v-label>
+      <v-label class="text-subtitle-2 font-weight-medium mb-2 text-darkText">Password</v-label>
       <v-text-field
         aria-label="password"
         v-model="password"
@@ -68,9 +70,11 @@ function validate(values: any, { setErrors }: any) {
         required
         variant="outlined"
         color="primary"
+        rounded="lg"
         hide-details="auto"
         :type="show1 ? 'text' : 'password'"
-        class="mt-2"
+        class="glass-input"
+        placeholder="Enter your password"
         @input="password"
       >
         <template v-slot:append-inner>
@@ -82,32 +86,77 @@ function validate(values: any, { setErrors }: any) {
       </v-text-field>
     </div>
 
-    <div class="d-flex align-center mt-4 mb-7 mb-sm-0">
+    <div class="d-flex align-center mt-3 mb-6">
       <v-checkbox
         v-model="checkbox"
         :rules="[(v: any) => !!v || 'You must agree to continue!']"
-        label="Keep me sign in"
+        label="Keep me signed in"
         required
         color="primary"
         class="ms-n2"
         hide-details
       ></v-checkbox>
-      <div class="ml-auto">
-        <router-link to="/login1" class="text-darkText link-hover">Forgot Password?</router-link>
-      </div>
     </div>
-    <v-btn color="primary" :loading="isSubmitting" block class="mt-5" variant="flat" size="large" :disabled="valid" type="submit">
-      Login</v-btn
+    <v-btn 
+      color="primary" 
+      :loading="isSubmitting" 
+      block 
+      variant="flat" 
+      size="large" 
+      rounded="lg"
+      :disabled="valid" 
+      type="submit"
+      class="animated-btn font-weight-bold"
     >
-    <div v-if="errors.apiError" class="mt-2">
-      <v-alert color="error">{{ errors.apiError }}</v-alert>
+      Sign In
+    </v-btn>
+    <div v-if="errors.apiError" class="mt-4">
+      <v-alert color="error" variant="tonal" rounded="lg">{{ errors.apiError }}</v-alert>
     </div>
   </Form>
+  </div>
 </template>
+
 <style lang="scss">
-.loginForm {
-  .v-text-field .v-field--active input {
-    font-weight: 500;
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
+.custom-font-wrapper {
+  font-family: 'Outfit', sans-serif !important;
+
+  h2, h3, h4, h5, h6, .v-label, .v-btn, input, .v-alert {
+    font-family: 'Outfit', sans-serif !important;
   }
+}
+
+.loginForm {
+  .v-text-field .v-field--variant-outlined {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .v-text-field .v-field--focused.v-field--variant-outlined {
+    background-color: #fff !important;
+  }
+}
+
+.hover-underline:hover {
+  text-decoration: underline !important;
+}
+
+.animated-btn {
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.4) !important;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(25, 118, 210, 0.6) !important;
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+.loginForm .v-text-field .v-field--active input {
+  font-weight: 500;
 }
 </style>

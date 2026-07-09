@@ -11,7 +11,7 @@ export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
     // @ts-ignore
-    user: JSON.parse(localStorage.getItem('user')),
+    user: JSON.parse(sessionStorage.getItem('user')),
     returnUrl: null as string | null
   }),
   actions: {
@@ -24,12 +24,12 @@ export const useAuthStore = defineStore({
       }
       const user = { id: 1, name: found.name, email: found.email, role: found.role };
       this.user = user;
-      localStorage.setItem('user', JSON.stringify(user));
+      sessionStorage.setItem('user', JSON.stringify(user));
       router.push(this.returnUrl || '/dashboard');
     },
     logout() {
       this.user = null;
-      localStorage.removeItem('user');
+      sessionStorage.removeItem('user');
       router.push('/login');
     }
   }

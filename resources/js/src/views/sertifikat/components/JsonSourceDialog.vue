@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="model" max-width="540" persistent>
+  <v-dialog v-model="model" max-width="540" persistent transition="dialog-bottom-transition">
     <v-card rounded="lg">
       <v-card-title class="d-flex align-center pa-5 pb-3">
         <v-icon color="primary" class="mr-2">mdi-database-cog-outline</v-icon>

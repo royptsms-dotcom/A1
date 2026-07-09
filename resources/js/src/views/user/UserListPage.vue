@@ -252,10 +252,8 @@ onMounted(() => {
                 <a :href="`mailto:${item.email}`" class="text-decoration-none text-primary link-hover">{{ item.email }}</a>
               </td>
               <td class="py-3">{{ item.job }}</td>
-              <td class="py-3 text-center">
-                <v-chip :color="getRoleColor(item.role)" variant="flat" size="small" rounded="md">
-                  {{ item.role }}
-                </v-chip>
+              <td class="py-3 text-center text-body-2 text-darkText font-weight-medium">
+                {{ item.role }}
               </td>
               <td class="py-3" style="white-space: nowrap;">
                 <div class="d-flex align-center justify-center" style="flex-wrap: nowrap;">
@@ -322,36 +320,39 @@ onMounted(() => {
   </v-row>
 
   <!-- Dialog Ubah Password -->
-  <v-dialog v-model="editDialog" max-width="480px" persistent>
-    <v-card rounded="lg">
+  <v-dialog v-model="editDialog" max-width="420px" persistent transition="dialog-bottom-transition">
+    <v-card v-if="editDialog" rounded="lg">
+      <!-- Header with icon and title -->
       <v-card-title class="d-flex align-center pa-5 pb-3">
-        <LockOutlined class="text-primary mr-2" />
-        <span class="text-h5 font-weight-bold">Ubah Password Karyawan</span>
-        <v-spacer />
-        <v-btn icon variant="text" size="small" @click="editDialog = false">
-          <span style="font-size: 20px">&times;</span>
-        </v-btn>
+        <LockOutlined class="text-primary mr-2" style="font-size: 18px;" />
+        <span class="text-h6 font-weight-bold">Ubah Password</span>
       </v-card-title>
       <v-divider />
 
       <v-card-text class="pa-5">
+        <!-- Employee Info Card -->
+        <div class="employee-info-card rounded-lg pa-4 mb-5">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap;">
+            <div class="text-subtitle-1 font-weight-bold text-darkText" style="flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              {{ selectedKaryawan?.nama }}
+            </div>
+            <v-chip size="small" color="primary" variant="tonal" class="font-weight-bold ml-2" style="flex-shrink: 0;">
+              {{ selectedKaryawan?.id }}
+            </v-chip>
+          </div>
+          <div class="text-caption text-lightText mt-1">{{ selectedKaryawan?.email }}</div>
+        </div>
+
         <v-form ref="formRef" @submit.prevent="savePassword">
           <v-row dense>
-            <v-col cols="12" class="mb-3">
-              <div class="text-caption text-medium-emphasis">Karyawan</div>
-              <div class="text-subtitle-1 font-weight-bold text-darkText">
-                {{ selectedKaryawan?.nama }} ({{ selectedKaryawan?.id }})
-              </div>
-              <div class="text-caption text-lightText">{{ selectedKaryawan?.email }}</div>
-            </v-col>
-
             <!-- Password Baru -->
-            <v-col cols="12">
+            <v-col cols="12" class="pb-3">
               <v-text-field
                 v-model="newPassword"
                 label="Password Baru"
                 variant="outlined"
                 density="comfortable"
+                color="primary"
                 :type="showNewPassword ? 'text' : 'password'"
                 :rules="passwordRules"
                 required
@@ -373,6 +374,7 @@ onMounted(() => {
                 label="Konfirmasi Password Baru"
                 variant="outlined"
                 density="comfortable"
+                color="primary"
                 :type="showConfirmPassword ? 'text' : 'password'"
                 :rules="confirmPasswordRules"
                 required
@@ -445,5 +447,40 @@ onMounted(() => {
     --v-field-border-width: 1px !important;
     color: rgb(var(--v-theme-primary)) !important;
   }
+}
+
+/* Reset any external overrides on Vuetify outlines for other dialog forms */
+:deep(.v-field__outline) {
+  --v-field-border-opacity: 0.15 !important;
+  --v-field-border-width: 1px !important;
+  color: rgb(var(--v-theme-inputBorder)) !important;
+}
+
+:deep(.v-field--focused .v-field__outline) {
+  --v-field-border-opacity: 1 !important;
+  --v-field-border-width: 1.5px !important;
+  color: rgb(var(--v-theme-primary)) !important;
+}
+
+/* Ensure the native input has no borders, outlines or box-shadows */
+:deep(.v-field__input),
+:deep(.v-field__input input),
+:deep(input.v-field__input),
+:deep(input) {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Fix label overlapping with outline border notch */
+:deep(.v-field--active .v-field__outline__notch::before),
+:deep(.v-field--focused .v-field__outline__notch::before) {
+  opacity: 0 !important;
+}
+
+/* Employee info card inside password dialog */
+.employee-info-card {
+  background: rgb(var(--v-theme-containerBg));
+  border: 1px solid rgba(var(--v-theme-borderLight), 0.8);
 }
 </style>

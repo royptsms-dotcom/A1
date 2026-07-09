@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)" fullscreen>
+  <v-dialog :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)" fullscreen transition="dialog-bottom-transition">
     <v-card class="cert-preview-bg">
       <v-toolbar color="primary" class="cert-no-print">
         <v-btn icon="mdi-close" @click="$emit('update:modelValue', false)"></v-btn>

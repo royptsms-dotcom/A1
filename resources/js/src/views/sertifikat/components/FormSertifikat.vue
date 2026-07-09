@@ -1,149 +1,156 @@
 <template>
-  <v-dialog :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)" max-width="800">
-    <v-card>
-      <v-card-title class="pa-4 bg-primary text-white d-flex justify-space-between align-center">
-        <span>Form Generate Sertifikat Kalibrasi</span>
-        <v-btn icon="mdi-close" variant="text" @click="$emit('update:modelValue', false)" density="compact"></v-btn>
+  <v-dialog :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)" max-width="800" scrollable transition="dialog-bottom-transition">
+    <v-card v-if="modelValue" rounded="lg">
+      <v-card-title class="d-flex align-center pa-5 pb-3">
+        <FileTextOutlined class="text-primary mr-2" style="font-size: 20px" />
+        <span class="text-h5 font-weight-bold">Form Generate Sertifikat Kalibrasi</span>
+        <v-spacer />
+        <v-btn icon variant="text" size="small" @click="$emit('update:modelValue', false)">
+          <span style="font-size: 20px">&times;</span>
+        </v-btn>
       </v-card-title>
+      <v-divider />
       
-      <v-card-text class="pa-4">
+      <v-card-text style="max-height: 60vh;" class="pa-5">
         <v-form ref="form" v-model="isValid" @submit.prevent="generateSertifikat">
-          <v-row>
-            <v-col cols="12" md="6">
+          <v-row dense>
+            <v-col cols="12" md="6" class="pb-2">
               <v-select
                 v-model="formData.nama_pt"
                 :items="['PT. SARANA MEGAMEDILAB SENTOSA', 'PT. SARANA MAJU']"
                 label="Nama PT"
-                variant="solo-filled" flat
-                density="compact"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
                 :rules="[v => !!v || 'Nama PT harus diisi']"
                 required
               ></v-select>
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="6" class="pb-2">
               <v-text-field
                 v-model="formData.nomor_sertifikat"
                 label="Nomor Sertifikat"
-                variant="solo-filled" flat
-                density="compact"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
                 placeholder="Contoh: 001/SMS-CC/II/2026"
                 :rules="[v => !!v || 'Nomor Sertifikat harus diisi']"
                 required
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12">
+            <v-col cols="12" class="pb-2">
               <v-text-field
                 v-model="formData.nama_rs"
                 label="Nama Rumah Sakit"
-                variant="solo-filled" flat
-                density="compact"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
                 :rules="[v => !!v || 'Nama RS harus diisi']"
                 required
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="6" class="pb-2">
               <v-combobox
                 v-model="formData.nama_alat"
                 :items="alatList.map(a => a.nama_alat || a.nama)"
                 label="Nama Alat"
-                variant="solo-filled" flat
-                density="compact"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
                 :rules="[v => !!v || 'Nama Alat harus diisi']"
                 required
               ></v-combobox>
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="6" class="pb-2">
               <v-text-field
                 v-model="formData.nomor_sn"
                 label="Serial Number (SN)"
-                variant="solo-filled" flat
-                density="compact"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
                 :rules="[v => !!v || 'Serial Number harus diisi']"
                 required
               ></v-text-field>
             </v-col>
 
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="6" class="pb-2">
               <v-text-field
                 v-model="formData.tanggal_kalibrasi"
                 label="Tanggal Kalibrasi"
                 type="date"
-                variant="solo-filled" flat
-                density="compact"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
                 :rules="[v => !!v || 'Tanggal Kalibrasi harus diisi']"
                 required
               ></v-text-field>
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="6" class="pb-2">
               <v-text-field
                 v-model="formData.valid_until"
                 label="Valid Until"
                 type="date"
-                variant="solo-filled" flat
-                density="compact"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
                 :rules="[v => !!v || 'Tanggal Valid harus diisi']"
                 required
               ></v-text-field>
             </v-col>
 
             <!-- Penandatangan 1 -->
-            <v-col cols="12">
-              <div class="text-subtitle-1 font-weight-bold mb-2">Penandatangan 1 (Kiri)</div>
-              <v-row>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="formData.penandatangan1_nama"
-                    label="Nama"
-                    variant="solo-filled" flat
-                    density="compact"
-                    placeholder="Contoh: Bernad Situmorang"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="formData.penandatangan1_jabatan"
-                    label="Jabatan"
-                    variant="solo-filled" flat
-                    density="compact"
-                    placeholder="Contoh: Technical"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+            <v-col cols="12" md="6" class="pb-2">
+              <v-text-field
+                v-model="formData.penandatangan1_nama"
+                label="Nama Penandatangan 1 (Kiri)"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
+                placeholder="Contoh: Bernad Situmorang"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6" class="pb-2">
+              <v-text-field
+                v-model="formData.penandatangan1_jabatan"
+                label="Jabatan Penandatangan 1 (Kiri)"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
+                placeholder="Contoh: Technical"
+              ></v-text-field>
             </v-col>
 
             <!-- Penandatangan 2 -->
-            <v-col cols="12">
-              <div class="text-subtitle-1 font-weight-bold mb-2">Penandatangan 2 (Kanan)</div>
-              <v-row>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="formData.penandatangan2_nama"
-                    label="Nama"
-                    variant="solo-filled" flat
-                    density="compact"
-                    placeholder="Contoh: Nurwahid Wijaya"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="formData.penandatangan2_jabatan"
-                    label="Jabatan"
-                    variant="solo-filled" flat
-                    density="compact"
-                    placeholder="Contoh: Customer Support Manager"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+            <v-col cols="12" md="6" class="pb-2">
+              <v-text-field
+                v-model="formData.penandatangan2_nama"
+                label="Nama Penandatangan 2 (Kanan)"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
+                placeholder="Contoh: Nurwahid Wijaya"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6" class="pb-2">
+              <v-text-field
+                v-model="formData.penandatangan2_jabatan"
+                label="Jabatan Penandatangan 2 (Kanan)"
+                variant="outlined"
+                density="comfortable"
+                color="primary"
+                placeholder="Contoh: Customer Support Manager"
+              ></v-text-field>
             </v-col>
           </v-row>
         </v-form>
       </v-card-text>
 
-      <v-card-actions class="pa-4 pt-0">
+      <v-divider />
+      <v-card-actions class="pa-4">
         <v-spacer></v-spacer>
-        <v-btn color="secondary" variant="tonal" @click="$emit('update:modelValue', false)">Batal</v-btn>
+        <v-btn color="secondary" variant="outlined" @click="$emit('update:modelValue', false)">Batal</v-btn>
         <v-btn color="primary" variant="flat" :disabled="!isValid" :loading="isSubmitting" @click="generateSertifikat">
           Generate Sertifikat
         </v-btn>
@@ -155,6 +162,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import axios from 'axios';
+import { FileTextOutlined } from '@ant-design/icons-vue';
 
 const props = defineProps<{
   modelValue: boolean;
@@ -287,3 +295,34 @@ async function generateSertifikat() {
   }
 }
 </script>
+
+<style scoped>
+/* Reset any external overrides on Vuetify outlines */
+:deep(.v-field__outline) {
+  --v-field-border-opacity: 0.15 !important;
+  --v-field-border-width: 1px !important;
+  color: rgb(var(--v-theme-inputBorder)) !important;
+}
+
+:deep(.v-field--focused .v-field__outline) {
+  --v-field-border-opacity: 1 !important;
+  --v-field-border-width: 1.5px !important;
+  color: rgb(var(--v-theme-primary)) !important;
+}
+
+/* Ensure the native input has no borders, outlines or box-shadows */
+:deep(.v-field__input),
+:deep(.v-field__input input),
+:deep(input.v-field__input),
+:deep(input) {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Fix label overlapping with outline border notch */
+:deep(.v-field--active .v-field__outline__notch::before),
+:deep(.v-field--focused .v-field__outline__notch::before) {
+  opacity: 0 !important;
+}
+</style>
